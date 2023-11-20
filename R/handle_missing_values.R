@@ -18,7 +18,8 @@ handle_missing_values <- function(df, method = "exclude", replace_with = NULL) {
     if (is.null(replace_with)) {
       stop("Please specify a value to replace missing data with using 'replace_with' parameter.")
     }
-    df <- replace_na(df, replace_with)
+    replace_list <- setNames(replicate(ncol(df), replace_with, simplify = FALSE), names(df))
+    df <- tidyr::replace_na(df, replace_list)
   } else if (method == "mean") {
     numeric_cols <- sapply(df, is.numeric)
     df[, numeric_cols] <- lapply(df[, numeric_cols, drop = FALSE], function(col) {

@@ -15,17 +15,18 @@
 prepare_datasets <- function(df1, df2, sort_columns = NULL, filter_criteria = NULL) {
   if (!is.null(sort_columns)) {
     if (all(sort_columns %in% names(df1)) && all(sort_columns %in% names(df2))) {
-      df1 <- df1[order(df1[, sort_columns]), ]
-      df2 <- df2[order(df2[, sort_columns]), ]
+      df1 <- df1 %>% arrange(!!!syms(sort_columns))
+      df2 <- df2 %>% arrange(!!!syms(sort_columns))
     } else {
       warning("Some sorting columns are not present in the datasets.")
     }
   }
   
   if (!is.null(filter_criteria)) {
-    df1 <- subset(df1, eval(parse(text = filter_criteria)))
-    df2 <- subset(df2, eval(parse(text = filter_criteria)))
+    df1 <- df1 %>% filter(!!rlang::parse_expr(filter_criteria))
+    df2 <- df2 %>% filter(!!rlang::parse_expr(filter_criteria))
   }
   
   list(df1 = df1, df2 = df2)
 }
+

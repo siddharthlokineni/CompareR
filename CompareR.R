@@ -4,3 +4,4 @@
 library(devtools)
 create("CompareR")
 
+devtools::document()

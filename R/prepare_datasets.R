@@ -4,13 +4,16 @@
 #' or handling missing values based on predefined criteria.
 #'
 #' @param df1 First dataset to be prepared.
-#' @param df2 Second dataset to be prepared.
+#' @param df2 Second dataset to be prepared. 
 #' @param sort_columns Columns to sort the datasets by.
 #' @param filter_criteria Criteria for filtering the datasets.
 #' @return A list containing two prepared datasets.
 #' @export
 #' @examples
 #' prepare_datasets(df1, df2, sort_columns = "variable", filter_criteria = "variable > 5")
+
+install.packages("dplyr") # Only if it's not already installed
+library(dplyr)
 
 prepare_datasets <- function(df1, df2, sort_columns = NULL, filter_criteria = NULL) {
   if (!is.null(sort_columns)) {

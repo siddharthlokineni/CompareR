@@ -1,6 +1,5 @@
-#' Convert Data Types of Variables in a Dataset
-#'
 #' Converts the data types of specified variables in a dataset. 
+#'
 #' This is useful for ensuring that variables are in the correct format 
 #' for analysis or comparison.
 #'
@@ -12,12 +11,19 @@
 #' @examples
 #' convert_data_types(df, conversions = list(var1 = 'numeric', var2 = 'factor'))
 
-convert_data_types <- function(df, target_type) {
-  # This is a simplistic version. A more robust version would handle various cases and data types.
-  if (target_type == "character") {
-    df[] <- lapply(df, as.character)
-  } else if (target_type == "numeric") {
-    df[] <- lapply(df, as.numeric)
+convert_data_types <- function(df, conversions) {
+  for (var_name in names(conversions)) {
+    target_type <- conversions[[var_name]]
+    
+    # Check if the variable exists in the data frame
+    if (var_name %in% names(df)) {
+      current_type <- class(df[[var_name]])
+      
+      # Only convert if the current type doesn't match the target type
+      if (current_type != target_type) {
+        df[[var_name]] <- as(df[[var_name]], target_type)
+      }
+    }
   }
   df
 }

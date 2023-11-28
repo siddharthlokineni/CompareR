@@ -1,0 +1,616 @@
+---
+title: "Using CompareR"
+author: "Your Name"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using CompareR}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+## Introduction to CompareR
+
+The CompareR package is designed to provide comprehensive tools for comparing datasets. It's particularly useful in scenarios where you need to assess the compatibility, similarities, and differences between two data frames. This could include comparing datasets for data cleaning, data validation, or data analysis purposes.
+
+###Vignette Content
+
+### **Function: Check Compatibility of Two Datasets**
+
+### Description
+
+**`check_compatibility(df1, df2)`** is a fundamental function in the "CompareR" package that assesses whether two datasets are compatible for comparison. This function is pivotal in the initial stages of dataset analysis, ensuring that the datasets can be meaningfully compared based on their structure.
+
+#### Parameters
+
+-   **`df1`**, **`df2`**: These parameters represent the two datasets you want to compare. They should be provided as data frames.
+
+#### Key Aspects of Compatibility Check
+
+-   **Dimension Check**: The function first checks if the two datasets have the same number of rows and columns. This is a basic requirement for many types of dataset comparisons, especially when performing row-wise or element-wise comparisons.
+
+-   **Variable Name Check**: It also verifies if the datasets have the same variable (column) names. Having consistent variable names across datasets is crucial for direct comparisons, as it ensures that the same variables are being compared in each dataset.
+
+#### When to Use
+
+-   **Initial Data Assessment**: Before delving into detailed comparisons, it's important to check if the datasets are fundamentally compatible. This function should be one of the first steps in your data comparison process.
+
+-   **Preparing for Merging or Concatenating Data**: If you plan to merge or concatenate datasets, ensuring compatibility in dimensions and variable names is essential. This function can help you identify if any preprocessing steps are needed before merging.
+
+-   **Validating Data Sources**: When receiving datasets from different sources or departments, use this function to confirm that they are structured similarly and suitable for joint analysis.
+
+#### Example
+
+```{r}
+# Assuming df1 and df2 are data frames that need to be compared
+df1 <- data.frame(var1 = 1:5, var2 = letters[1:5])
+df2 <- data.frame(var1 = 1:5, var2 = letters[1:5])
+compatibility_results <- CompareR::check_compatibility(df1, df2)
+
+```
+
+In this example, **`check_compatibility`** is used to determine if **`df1`** and **`df2`** are compatible for comparison. Both datasets have the same number of rows and columns and the same variable names, so they should be deemed compatible. This compatibility check is crucial for ensuring meaningful and error-free comparisons, as it verifies that the datasets are structured in a way that allows for direct comparison of their contents.
+
+### **Function: Compare Two Datasets**
+
+### Description
+
+**`compare_datasets(df1, df2)`** is a core function in the "CompareR" package that conducts a high-level comparison between two datasets. This function is designed to provide an overview of how similar or different the datasets are in various aspects such as dimensions, variable names, data types, and missing values.
+
+#### Parameters
+
+-   **`df1`**, **`df2`**: These parameters are the datasets you wish to compare, provided as data frames. The function assumes that these datasets are already prepared for comparison (e.g., sorted and filtered as necessary).
+
+#### Key Features of Comparison
+
+-   **Dimension Check**: It first verifies if the datasets have the same number of rows and columns. Discrepancies in dimensions are immediately flagged, as they often indicate fundamental differences between the datasets.
+
+-   **Variable Name Comparison**: It checks for consistency in variable (column) names between the datasets. This includes identifying common columns and those that are unique to each dataset.
+
+-   **Data Type Comparison**: For columns that are common to both datasets, the function compares their data types. Mismatches in data types can often lead to incorrect comparisons or errors in subsequent analyses.
+
+-   **Missing Value Analysis**: The function analyzes and reports on missing values within the common columns. This is crucial as missing data can significantly impact on the data at times.
+
+#### When to Use
+
+-   **Initial Dataset Comparison**: This function is ideal for the initial stage of dataset comparison, providing a quick overview of how two datasets differ. It's particularly useful when you start working with new datasets or when you want to ensure basic compatibility before conducting more detailed analyses.
+
+-   **Data Cleaning and Validation**: Before delving into detailed comparisons or analytics, use this function to identify any inconsistencies in dimensions, variable names, or data types that might need cleaning or standardization.
+
+#### Example
+
+```{r}
+# Assuming df1 and df2 are prepared data frames ready for comparison
+# Dataset for Year 1
+df1 <- data.frame(
+  Product = c("Apples", "Oranges", "Bananas"),
+  Sales_Y1 = c(100, 150, 200)
+)
+
+# Dataset for Year 2
+df2 <- data.frame(
+  Product = c("Apples", "Oranges", "Bananas"),
+  Sales_Y2 = c(110, 140, 210)
+)
+
+# Prepare datasets (assuming 'prepare_datasets' function exists in your package)
+# For this example, assume no sorting or filtering is needed
+prepared_df1 <- df1
+prepared_df2 <- df2
+
+# Compare datasets
+comparison_results <- CompareR::compare_datasets(prepared_df1, prepared_df2)
+
+```
+
+In this example, **`df1`** and **`df2`** are compared to provide an overview of their similarities and differences. The output, **`compare_results`**, will include information about the dimensions of each dataset, common and unique variable names, any differences in data types for common variables, and an analysis of missing values. This comprehensive overview is crucial for understanding the fundamental aspects of how the datasets compare and is typically the first step in a more detailed data comparison and analysis workflow.
+
+### **Function: Compare Variables of Two Datasets**
+
+### Description
+
+**`compare_variables(df1, df2)`** is a specialized function in the "CompareR" package that focuses on comparing the variables (columns) of two datasets. This function assesses and reports discrepancies in variables between the datasets, particularly in terms of their names and data types.
+
+#### Parameters
+
+-   **`df1`**, **`df2`**: These are the two datasets being compared, provided as data frames. The function will analyze the variables within these datasets.
+
+#### Key Features of Comparison
+
+-   **Variable Name Comparison**: The function begins by comparing the column names of the two datasets. It identifies which variables (columns) are common to both datasets and which are unique to each one. This is crucial for understanding the level of overlap and potential areas of mismatch between the datasets.
+
+-   **Data Type Comparison**: For each common variable, the function compares the data types across the two datasets. Mismatches in data types can be indicative of fundamental differences in how data is recorded or processed in each dataset.
+
+-   **Discrepancy Count and Details**: The function outputs both a count of discrepancies (differences in variable names and data types) and detailed information about these discrepancies. This output is essential for users to understand specific areas of inconsistency.
+
+#### When to Use
+
+-   **Pre-analysis Variable Check**: Use this function when you need to ensure that datasets you're comparing have a compatible structure, especially in terms of variable names and data types. This is often a prerequisite step before conducting detailed data analysis or comparisons.
+
+-   **Data Integration and Merging**: Before integrating or merging datasets from different sources, this function helps identify variables that need to be standardized or reconciled due to differences in naming conventions or data types.
+
+-   **Data Cleaning and Standardization**: This function can help highlight inconsistencies in variable naming or data types, guiding the data cleaning and standardization process.
+
+#### Example
+
+```{r}
+variable_diffs <- CompareR::compare_variables(df1, df2)
+
+```
+
+In this example, the function **`compare_variables`** is used to compare the variables of **`df1`** and **`df2`**. The output, **`variable_diffs`**, will include a detailed breakdown of the variables that are common to both datasets, those that are unique to each, and any differences in data types for the common variables. This comparison is critical for identifying and addressing potential issues in variable consistency before proceeding with more complex data analysis or integration tasks.
+
+### **Function: Convert Data Types of Variables in a Dataset**
+
+### Description
+
+**`convert_data_types(df, conversions)`** is a key function in the "CompareR" package designed to adjust the data types of specified variables within a dataset. This function is essential for ensuring that variables are in the correct format for analysis or comparison, particularly when handling datasets from varied sources or with inconsistent data types.
+
+#### Parameters
+
+-   **`df`**: This is the dataset in which you want to convert the data types of certain variables. It should be provided as a data frame.
+
+-   **`conversions`**: A named list where the names correspond to the variable names in the dataset, and the values are the desired data types. Each entry in this list specifies how a particular variable in **`df`** should be converted.
+
+### Functionality
+
+-   **Selective Conversion**: The function allows selective conversion of variables. You can specify which variables to convert and to what data type, offering flexibility and control over the data transformation process.
+
+-   **Versatile Data Type Handling**: This function can handle a variety of data type conversions, such as converting character variables to numeric, factors to characters, integers to logical, and so on. It's particularly useful when cleaning or standardizing data for analysis or when preparing data for functions that require specific data types.
+
+#### When to Use
+
+-   **Data Cleaning and Preparation**: Use this function when preparing data for analysis or comparison, especially if your data comes from sources with inconsistent data type conventions.
+
+-   **Pre-analysis Standardization**: Before running any statistical analysis or machine learning algorithms, it's crucial to have all variables in the correct data type. This function facilitates this standardization process.
+
+-   **Data Integration from Multiple Sources**: When combining data from different sources, you often encounter variables of different data types that should be identical. This function helps in aligning these data types.
+
+```{r}
+# Sample data frame
+data <- data.frame(
+  var1 = c("1", "2", "3"),
+  var2 = c("A", "B", "C"),
+  var3 = c(4, 5, 6)
+)
+
+# Define the conversions
+conversions <- list(
+  var1 = 'numeric',   # Convert var1 to numeric
+  var2 = 'character'  # Convert var2 to character (although it's already character)
+)
+
+  # Convert data types using the modified function
+converted_data <- CompareR::convert_data_types(data, conversions)
+```
+
+In this example, code creates a data frame called **`df`** with two columns, **`var1`** and **`var2`**. The values in **`var1`** are character strings ("1", "2", "3"), and the values in **`var2`** are also character strings ("A", "B", "C"). Then you create a named list called **`conversions`**. Each name in the list corresponds to a variable name in the data frame **`df`**, and the values specify the desired data types for those variables. For example, it says that **`var1`** should be converted to a numeric data type, and **`var2`** should remain a character data type.Then the **`convert_data_types`** function from the **`CompareR`** package. It takes two arguments:
+
+-   **`df`**: The data frame to be converted (in this case, **`df`**).
+
+-   **`target_type`**: A named list of conversions specifying the desired data types for each variable.
+
+After executing this code, the **`converted_df`** data frame will contain the same data as **`df`**, but with the specified data type conversions applied. In this example, **`var1`** will be converted from character to numeric, and **`var2`** will remain as character.
+
+### **Function: Handle Missing Values in Dataset**
+
+### Description
+
+**`handle_missing_values(df, method, replace_with)`** is a vital function in the "CompareR" package designed to manage missing values in a dataset. Handling missing values appropriately is crucial in data analysis and comparison, as they can significantly affect the results and interpretations.
+
+#### Parameters
+
+-   **`df`**: This is the dataset in which missing values need to be handled. It should be provided as a data frame.
+
+-   **`method`**: This parameter specifies the method to use for handling missing values. Common methods include 'exclude', 'replace', 'mean', 'median', or 'flag'.
+
+    -   **Exclude**: Rows with missing values are omitted from the dataset.
+
+    -   **Replace**: Missing values are replaced with a specified value or a value computed based on a given logic.
+
+    -   **Mean/Median**: Missing values in numeric columns are replaced with the mean or median of the non-missing values in that column.
+
+    -   **Flag**: Creates a new column in the dataset to flag rows with missing values.
+
+-   **`replace_with`**: This optional parameter is used with the 'replace' method to specify the value to replace missing data with. It can be a single value or a named list matching column names with replacement values.
+
+### Functionality
+
+-   **Flexible Handling of Missing Data**: The function offers multiple strategies for dealing with missing values, providing flexibility based on the nature of the data and the specific requirements of your analysis.
+
+-   **Data Integrity Maintenance**: By handling missing values appropriately, the function helps maintain the integrity of the dataset, ensuring that subsequent analyses are valid and reliable.
+
+#### When to Use
+
+-   **Data Cleaning**: Before any data analysis, it's crucial to address missing values. This function is an essential part of the data cleaning process.
+
+-   **Preparation for Analysis or Comparison**: Many statistical techniques and data comparison methods require complete cases or specific ways of dealing with missing data. Use this function to prepare your dataset accordingly.
+
+-   **Enhancing Data Quality**: Proper handling of missing data can significantly enhance the quality of the dataset, making it more suitable for high-stakes analysis.
+
+#### Example
+
+```{r}
+# Assuming 'df' is a data frame with some missing values
+# This example excludes rows with any missing values
+handled_df <- CompareR::handle_missing_values(df, method = "exclude")
+
+```
+
+In this example, the **`handle_missing_values`** function is used to remove rows from the data frame **`df`** that contain any missing values. This method is particularly useful in scenarios where the presence of complete data is crucial for analysis, and where the omission of incomplete rows will not significantly bias the results. The function provides a straightforward way to ensure that the dataset is free from missing values, which is a common requirement in many statistical analyses and machine learning algorithms.
+
+### **Function: Compare Observations of Two Datasets**
+
+### Description
+
+**`compare_observations(df1, df2)`** is a specific function in the "CompareR" package that carries out a row-wise comparison between two datasets. This function is designed to identify and highlight differences in data values at the row level, making it particularly useful for detailed data analysis and validation.
+
+#### Parameters
+
+-   **`df1`**, **`df2`**: These are the two datasets to be compared, provided as data frames. The function assumes that these datasets are aligned correctly, meaning they have the same number of rows and ideally corresponding entries in each row.
+
+#### Key Features of Comparison
+
+-   **Row-wise Comparison**: The function performs a comparison for each row across the datasets, checking for discrepancies in the data values.
+
+-   **Identification of Differences**: It identifies the rows and specific columns where the datasets differ, providing detailed insights into the nature and location of the discrepancies.
+
+-   **Handling Different Data Types**: The function is capable of handling various data types, including numeric, character, and factor types, comparing them appropriately.
+
+#### When to Use
+
+-   **Data Validation and Verification**: Use this function when you need to validate or verify that two datasets, supposedly containing similar information, are indeed consistent with each other.
+
+-   **Detailed Data Analysis**: In scenarios requiring a thorough analysis of datasets, such as in data reconciliation or error detection processes, this function is particularly useful.
+
+-   **Pre-merging Checks**: Before merging or concatenating datasets row-wise, use this function to ensure that the rows are indeed comparable and contain the expected data.
+
+#### Example
+
+```{r}
+# Assuming df1 and df2 are data frames with the same structure ready for observation comparison
+observation_diffs <- CompareR::compare_observations(df1, df2)
+
+```
+
+In this example, **`compare_observations`** is used to perform a detailed, row-wise comparison of **`df1`** and **`df2`**. The output, **`observation_diffs`**, will include information on where the rows in the datasets differ, including which specific columns contain different values. This type of comparison is invaluable when the alignment and accuracy of data across similar datasets need to be confirmed, such as in data integration tasks or when checking the consistency of replicated data.
+
+### **Function: `clean_dataset`**
+
+### Description
+
+The **`clean_dataset`** function is designed to clean a dataset by applying specific data cleaning operations such as removing duplicate rows and converting character variables to a specified case (either upper or lower case). This function is essential in data preprocessing to ensure data quality and consistency.
+
+#### Parameters
+
+-   **`df`**: The data frame to be cleaned.
+
+-   **`variables`** (optional): A vector of variable names in the dataset to which the cleaning operations should be applied. If **`NULL`** (the default), the operations are applied to all columns.
+
+-   **`remove_duplicates`**: A logical value indicating whether duplicate rows should be removed. The default is **`TRUE`**.
+
+-   **`convert_to_case`** (optional): A string value that specifies whether to convert character variables to 'lower' or 'upper' case. If **`NULL`**, no case conversion is performed.
+
+### Functionality
+
+-   **Duplicate Removal**: If **`remove_duplicates`** is **`TRUE`**, the function removes all duplicate rows from the dataset, which can help in preventing biases and errors in analysis caused by repeated data.
+
+-   **Case Conversion**: If **`convert_to_case`** is set to 'lower' or 'upper', all character variables (or those specified in the **`variables`** parameter) are converted to the specified case. This is useful for standardizing text data, particularly when the dataset contains categorical variables with case inconsistencies.
+
+-   **Selective Cleaning**: The function allows for selective cleaning of specific variables if the **`variables`** parameter is used, providing flexibility depending on the user's needs.
+
+#### When to Use
+
+-   **Pre-analysis Data Cleaning**: Before performing data analysis, it's crucial to clean the dataset to improve data quality and ensure accurate results.
+
+-   **Data Standardization**: When preparing data for processes like data integration or comparison, standardizing the format of text data and removing duplicates is essential for consistency.
+
+-   **Handling Large Datasets**: In datasets with potential redundant entries, removing duplicates is vital to reduce the dataset size and improve processing efficiency.
+
+#### Example
+
+```{r}
+# Preparing datasets for comparison
+df1 <- data.frame(name = c("Alice", "Bob", "Charlie"), score = c(100, 200, 150))
+df2 <- data.frame(name = c("alice", "bob", "charlie"), score = c(100, 210, 150))
+
+# Cleaning datasets
+df1_cleaned <- CompareR::clean_dataset(df1, convert_to_case = "lower")
+df2_cleaned <- CompareR::clean_dataset(df2, convert_to_case = "lower")
+
+# Perform comparison after cleaning
+comparison_results <- CompareR::compare_datasets(df1_cleaned, df2_cleaned)
+
+```
+
+In this example, two datasets, **`df1`** and **`df2`**, are prepared for comparison. They contain similar data but with differences in the case formatting of the 'name' column. By using **`clean_dataset`** to standardize the case format, we ensure that when **`compare_datasets`** is used, any differences identified are due to genuine discrepancies in data values (like the different score for 'Bob') rather than formatting inconsistencies. This pre-processing step is crucial in the CompareR package to make the comparisons more reliable and the results more trustworthy.
+
+### **Function: `compare_by_group`**
+
+### Description
+
+The **`compare_by_group`** function is a specialized tool within the CompareR package, designed to compare two datasets based on specified grouping variables. This function is particularly useful for performing BY-group analysis, which involves comparing subsets of data within the larger datasets.
+
+#### Parameters
+
+-   **`df1`**: The first dataset for comparison, provided as a data frame.
+
+-   **`df2`**: The second dataset for comparison, also provided as a data frame.
+
+-   **`group_vars`**: A vector of variables used for grouping the data. These variables must be present in both **`df1`** and **`df2`**.
+
+#### Functionality
+
+-   **Group-Based Comparison**: The function splits both datasets into subgroups based on the specified **`group_vars`**. It then performs comparisons within each corresponding subgroup across the two datasets.
+
+-   **Handling of Disparate Groups**: The function identifies all unique groups present in either dataset and performs comparisons for each. This approach ensures that all possible combinations of group variables are considered.
+
+-   **Flexibility and Customization**: The function's behavior can be tailored by choosing different grouping variables, allowing users to focus on specific segments or dimensions of the datasets for comparison.
+
+#### When to Use
+
+-   **Segmented Data Analysis**: Use this function when your analysis requires comparing datasets at a more granular level, such as comparing sales data by region or customer demographics.
+
+-   **Complex Dataset Comparisons**: In scenarios where global comparisons between datasets might be insufficient or misleading due to internal heterogeneity, this function allows for more nuanced and targeted comparisons.
+
+-   **Identifying Group-Specific Trends**: This function is particularly valuable when looking for trends or discrepancies that are specific to certain groups or categories within the datasets.
+
+#### Example
+
+```{r}
+# Sample datasets
+df1 <- data.frame(region = c("North", "South", "East", "West"),
+                  sales = c(100, 150, 120, 130))
+
+df2 <- data.frame(region = c("North", "South", "East", "West"),
+                  sales = c(110, 140, 125, 135))
+
+# Grouping variable
+group_vars <- c("region")
+
+# Perform group-based comparison
+comparison_results <- CompareR::compare_by_group(df1, df2, group_vars)
+
+```
+
+In this example, **`compare_by_group`** is used to compare sales data from two datasets (**`df1`** and **`df2`**) that are grouped by the **`region`** variable. The function will analyze the sales data for each region, comparing the corresponding figures from **`df1`** and **`df2`**. The result, **`comparison_results`**, will be a list where each element represents the comparison results for a specific region, providing insights into regional discrepancies or similarities in sales.
+
+### **Notes**
+
+-   Ensure that the **`compare_datasets`** function, presumably used within **`compare_by_group`**, is designed to handle comparisons of subgroups effectively and can manage cases where specific groups might only be present in one of the datasets.
+
+-   Regular testing and validation with diverse datasets are recommended to ensure that the function handles various scenarios and data structures effectively.
+
+### **Function: Initialize Settings for Data Comparison**
+
+### Description
+
+**`initialize_comparison_settings(tolerance, missing_value_method)`** function sets global options for the comparison process. These settings influence how the subsequent comparison functions within the package behave. This function is particularly useful when you need to standardize the comparison criteria across multiple comparison operations.
+
+#### Parameters
+
+-   **`tolerance`**: This parameter sets the default tolerance level for numeric comparisons. It is a non-negative numeric value that defines the acceptable range of difference between numeric values in the datasets being compared. A smaller tolerance means a stricter comparison, where even slight differences are noted, while a larger tolerance can be used to overlook minor discrepancies due to issues like floating-point imprecision.
+
+-   **`missing_value_method`**: This parameter sets the default method for handling missing values during data comparison. Options could include 'exclude', 'replace', 'mean', 'median', or 'flag', each specifying a different strategy for dealing with missing data. For example, 'exclude' would omit any rows with missing values from the comparison, while 'replace' would substitute missing values with a specified value.
+
+#### When to Use
+
+-   **Pre-comparison Configuration**: Before performing any data comparisons, use this function to set baseline comparison standards. This is particularly useful when working with multiple datasets where consistent comparison criteria are necessary.
+
+-   **Handling Numeric Data**: When comparing datasets with numeric data, setting an appropriate tolerance level can help in managing discrepancies due to rounding or representation errors.
+
+-   **Dealing with Missing Data**: If your datasets have missing values, decide how you want these to be handled during comparisons. This function allows you to set a global strategy for all subsequent comparisons.
+
+#### Example
+
+```{r}
+# Setting a tolerance level of 0.01 for numeric comparisons 
+# and choosing to exclude rows with missing values during comparisons 
+CompareR::initialize_comparison_settings(tolerance =0.01, missing_value_method = "exclude")
+```
+
+In this example, any subsequent comparison operations performed by functions from the "CompareR" package will use a tolerance level of 0.01 for comparing numeric values. This means that differences below 0.01 will be considered negligible. Additionally, any rows with missing values in the datasets being compared will be excluded from the comparison process.
+
+This function is a crucial first step in ensuring that all comparisons made using the package are consistent and adhere to the predefined standards set by the user.
+
+### **Function: Prepare Datasets for Comparison**
+
+### Description
+
+**`prepare_datasets(df1, df2, sort_columns, filter_criteria)`** is a crucial function in the "CompareR" package that prepares datasets for comparison by applying sorting and filtering based on specified criteria. This function is essential for ensuring that the datasets are in an appropriate format and state for effective and meaningful comparison.
+
+#### Parameters
+
+-   **`df1`**, **`df2`**: These are the first and second datasets that you intend to compare. They should be in the form of data frames.
+
+-   **`sort_columns`**: This optional parameter specifies the columns by which the datasets should be sorted before comparison. Sorting is important to align data rows correctly, especially when comparing datasets row-wise. If the datasets are not sorted in the same order, comparisons might yield incorrect or misleading results.
+
+-   **`filter_criteria`**: This parameter allows you to specify criteria to filter the datasets. It's useful for focusing the comparison on specific subsets of the data. The criteria should be a logical expression or condition that determines which rows to keep in the datasets.
+
+#### When to Use
+
+-   **Aligning Datasets**: Before comparing two datasets, it's important to ensure that they are aligned correctly, particularly if you're going to perform row-wise comparisons. Sorting both datasets by the same columns ensures this alignment.
+
+-   **Focusing on Relevant Data**: In many cases, not all data in a dataset is relevant for comparison. The **`filter_criteria`** allows you to narrow down the datasets to the most pertinent rows, making the comparison more efficient and relevant.
+
+-   **Standardizing Data Preprocessing**: This function provides a standardized way to preprocess datasets for comparison. By using this function, you ensure that all comparisons made with your package follow the same preprocessing steps, improving consistency.
+
+#### Example
+
+```{r}
+# Assuming df1 and df2 are data frames with a column named 'variable' 
+# This example will sort both datasets by the 'variable' column and 
+# then filter out rows where 'variable' is less than or equal to 5 
+# install.packages("dplyr")
+library(dplyr)
+
+# Dataset for Year 1
+df1 <- data.frame(
+  month = c("Jan", "Feb", "Mar", "Apr"),
+  sales = c(200, 150, 180, 210)
+)
+
+# Dataset for Year 2
+df2 <- data.frame(
+  month = c("Jan", "Feb", "Mar", "Apr"),
+  sales = c(220, 160, 170, 200)
+)
+
+sort_columns <- "month"
+filter_criteria <- "sales > 160"
+
+# Assuming prepare_datasets is defined as per your function
+prepared_data <- CompareR::prepare_datasets(df1, df2, sort_columns, filter_criteria)
+
+```
+
+In this example, **`df1`** and **`df2`** are first sorted based on the values in the **`variable`** column. After sorting, both datasets are filtered to include only the rows where the value in the **`variable`** column is greater than 5. This preparation step is crucial to ensure that the data comparison is conducted on appropriately aligned and filtered datasets, leading to more accurate and relevant comparison results.Function: Reset Comparison Settings to Defaults
+
+**`reset_comparison_settings()`** resets the comparison settings to their default values.
+
+**Example:**
+
+```{r}
+CompareR::reset_comparison_settings()
+```
+
+### **Function: Set Tolerance Level for Comparisons**
+
+### Description
+
+**`set_tolerance(tolerance)`** is a critical function in the "CompareR" package that sets the global tolerance level for numeric comparisons. This function is essential for managing how numerical differences between datasets are evaluated and treated during comparisons.
+
+#### Parameters
+
+-   **`tolerance`**: A non-negative numeric value specifying the tolerance level. This value determines the threshold for considering numerical values as equivalent during comparisons.
+
+#### Key Features of Setting Tolerance
+
+-   **Flexibility in Numeric Comparisons**: By setting a tolerance level, you can control the sensitivity of numerical comparisons. A smaller tolerance value results in stricter comparisons, where even small differences are recognized, whereas a larger tolerance allows minor discrepancies to be overlooked, which can be helpful in dealing with issues like floating-point arithmetic inaccuracies.
+
+-   **Global Impact**: The tolerance level set by this function impacts all subsequent numeric comparisons performed by functions in the package, ensuring consistency across different analyses.
+
+-   **Handling Real-world Data Variability**: In real-world data, exact matches of numeric values are often unrealistic due to measurement errors, rounding, or other variations. Setting an appropriate tolerance level helps in making realistic and practical comparisons.
+
+#### When to Use
+
+-   **Pre-analysis Configuration**: Before performing any detailed numeric comparisons or analyses, setting the tolerance level is essential to define how strictly numbers should be matched.
+
+-   **Data from Different Sources**: When comparing datasets from different sources or instruments where minor variations in measurements are expected, a properly set tolerance level can prevent false discrepancies.
+
+-   **Floating-point Comparisons**: In computations involving floating-point numbers, where precision issues can lead to minor differences, an appropriate tolerance level ensures that such differences do not falsely impact the comparison results.
+
+#### Example
+
+```{r}
+# Setting the tolerance level to 0.001 for numeric comparisons
+CompareR::set_tolerance(0.001)
+
+```
+
+In this example, **`set_tolerance`** is used to establish a tolerance level of 0.001 for all subsequent numeric comparisons within the "CompareR" package. This setting means that numeric values will be considered equal if their difference is less than or equal to 0.001. Such a setting is particularly useful in situations where perfect numerical precision is not expected and slight differences are within an acceptable range, such as in scientific measurements or when dealing with data from different systems that may have slight variations in how they record or process numerical values.
+
+### **Specific Function Interactions**
+
+1.  **Compare Datasets Functions (`compare_datasets`, `compare_by_group`, etc.)**:
+
+    -   These functions might include comparisons of numeric values as part of their analysis. With a tolerance of 0.001, small differences in numbers, perhaps due to rounding errors or measurement inaccuracies, are overlooked. For instance, if one dataset has a value of 10.001 and another has 10.002 in the same position, these would be considered equal under this tolerance setting.
+
+2.  **Data Cleaning and Preprocessing**:
+
+    -   Although functions like **`clean_dataset`** primarily deal with cleaning and standardizing data, any component of these functions that involves numeric comparisons or decision-making based on numeric values would also adhere to the set tolerance level.
+
+3.  **Observation Comparison (`compare_observations`)**:
+
+    -   In row-wise comparisons, where numeric values from corresponding rows and columns are compared, the tolerance level dictates whether differences in these numeric values are significant enough to be reported.
+
+### **Function: `generate_comparison_visualization`**
+
+### Description
+
+**`generate_comparison_visualization`** is a function in the CompareR package that creates visual representations of data comparison results. This function is particularly useful for visually highlighting discrepancies in variables' distributions or counts, making it easier to interpret the comparison results. It is designed to work seamlessly with the output of comparison functions in the CompareR package, such as **`compare_datasets`** or **`compare_by_group`**.
+
+#### Usage in Workflow
+
+The function is typically used at the end of a data comparison workflow:
+
+1.  **Prepare Datasets**: Start by preparing your datasets using functions like **`prepare_datasets`** to ensure they are in a suitable format for comparison.
+
+2.  **Compare Datasets**: Perform the dataset comparison using functions like **`compare_datasets`** or **`compare_by_group`**, depending on your analysis needs.
+
+3.  **Visualize Comparison Results**: Use **`generate_comparison_visualization`** to create a visual representation of the comparison results.
+
+#### Example
+
+Here's an example that uses several functions from the CompareR package:
+
+```{r}
+# Sample Data
+df1 <- data.frame(Variable = c("A", "B", "C"), Value = c(10, 20, 30))
+df2 <- data.frame(Variable = c("A", "B", "C"), Value = c(15, 18, 30))
+
+# Assuming the prepare_datasets function returns a list of two data frames
+prepared <- CompareR::prepare_datasets(df1, df2, sort_columns = "Variable")
+prepared_df1 <- prepared$df1
+prepared_df2 <- prepared$df2
+
+# Compare Datasets
+comparison_results <- CompareR::compare_datasets(prepared_df1, prepared_df2)
+
+# Visualize Comparison Results
+plot <- CompareR::generate_comparison_visualization(comparison_results)
+
+# Display or save the plot
+print(plot) # For display in R environment or R Markdown
+ggsave("comparison_plot.png", plot) # To save the plot
+```
+
+#### When to Use
+
+-   **Post-Comparison Analysis**: After performing data comparisons using other functions in the package, use this function to visualize the results. It's particularly useful for presentations or reports where visual aids can enhance understanding.
+
+-   **Exploratory Data Analysis**: In exploratory phases, visualizing comparison results can help in identifying trends, outliers, or anomalies that may warrant further investigation.
+
+-   **Communicating Results**: When you need to communicate your findings to others, especially to those who may not be well-versed in data analysis, a visual representation can be more effective than numerical or textual data alone.
+
+#### **Function: Generate a Detailed Report of Dataset Comparison**
+
+### Description
+
+**`generate_detailed_report(comparison_results, output_format, file_name)`** is a comprehensive function in the "CompareR" package, designed to create a detailed report that outlines all the differences and similarities found in a dataset comparison. This function is crucial for documenting the results of data comparisons in a structured and readable format.
+
+#### Parameters
+
+-   **`comparison_results`**: This is the input to the function, typically the output from a dataset comparison function such as **`compare_datasets`**. It should contain detailed information on the discrepancies, similarities, and other relevant metrics from the comparison.
+
+-   **`output_format`**: Specifies the format of the generated report. Common formats could be 'text', 'html', 'pdf', etc., depending on the implementation in the package.
+
+-   **`file_name`** (optional): If provided, the report is saved to a file with this name, especially relevant for 'html' or 'pdf' formats.
+
+#### Key Features of Report Generation
+
+-   **Comprehensive Documentation**: The report includes detailed information on every aspect of the comparison, such as differences in variable values, discrepancies in data types, and any other relevant metrics.
+
+-   **Customizable Output Format**: Depending on the needs, the report can be generated in various formats, allowing for flexibility in how the results are presented and shared.
+
+-   **Ease of Interpretation**: The detailed report is structured to enhance readability and understanding, making it easier to interpret the comparison results, especially in complex datasets.
+
+#### When to Use
+
+-   **Post-Comparison Analysis**: After completing data comparisons, this function is used to compile the results into a detailed report, which is essential for analysis and decision-making.
+
+-   **Documentation and Record-Keeping**: In scenarios requiring thorough documentation of data analysis processes and results, such as in research or regulatory compliance, this function provides the necessary detailed reporting.
+
+-   **Communication of Findings**: When you need to present comparison findings to stakeholders or team members, especially those who may not be directly involved in the data analysis process, a detailed report in a reader-friendly format is invaluable.
+
+```{r}
+# Assuming you have comparison results from a previous comparison
+detailed_report <- CompareR::generate_detailed_report(comparison_results, output_format = "text")
+
+```
+
+In this example, **`generate_detailed_report`** is used to create a detailed report of the **`comparison_results`**, which are the outcomes of a dataset comparison process. The report is generated in a text format (this could be plain text, markdown, or another text-based format), providing a thorough and structured presentation of all the findings from the comparison. This detailed report can then be used for further analysis, documentation, or presented to stakeholders for decision-making or review purposes.
+
+**Concluding Remarks**
+
+This vignette provides a glimpse into the functionality of the CompareR package. Each function is designed to handle specific aspects of dataset comparison, offering a robust toolkit for data analysts and scientists. By following the examples provided, users can effectively utilize these functions in their data comparison tasks.
